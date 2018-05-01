@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+    <meta charset="UTF-8" />
+    <title>TERAD Guestbook</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
+</head>
+<body>
+
+<h1> Top PS4 Games</h1>
+<img th:src="@{/images/PS4_logo.png}" />
+
+<div th:if="${entries.isEmpty()}">
+    <p>There are no comments in the Guestbook. Game Name.</p>
+</div>
+
+<div th:if="${!entries.isEmpty()}">
+    <table>
+        <tr>
+            <th>Game</th>
+            <th>Genres</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+        <tr th:each="entry: ${entries}">
+            <td th:text="${entry.user}"></td>
+            <td th:text="${entry.comment}"></td>
+            <td><a th:href="@{'/delete/' + ${entry.id}}">Delete</a></td>
+            <td><a th:href="@{'/update/' + ${entry.id}}">Update</a></td>
+        </tr>
+    </table>
+</div>
+
+<h2 th:text="${formHeader}"></h2>
+<form th:object="${newEntry}" method="post">
+    <label>Game: </label>
+    <input type="text" style="margin-left: 10px" size="32"  th:field="*{user}" />
+    <br/>
+    <label>Genres: </label>
+    <input  type="text" size="32" th:field="*{comment}" />
+    <input type="submit" value="Submit" />
+    <p class="warning" th:if="${#fields.hasErrors('user')}"> Please fill Game Box</p>
+    <p class="warning" th:if="${#fields.hasErrors('comment')}">Please fill Genres Box</p>
+    <input type="reset" value="Reset" />
+
+</form>
+
+
+
+</body>
+</html>
